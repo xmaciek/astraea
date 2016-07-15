@@ -7,6 +7,9 @@ class Editor : public QMainWindow {
 
 public:
     Editor( int argc, char** argv );
+
+signals:
+    void quit();
 };
 
 
