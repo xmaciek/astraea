@@ -7,7 +7,9 @@
 #include <QMenuBar>
 
 
-Editor::Editor( int argc, char** argv ) {
+Editor::Editor( int argc, char** argv ) :
+    m_structureView( this )
+{
     QMenuBar* menuBar = new QMenuBar( this );
     setMenuBar( menuBar );
 
@@ -54,4 +56,6 @@ Editor::Editor( int argc, char** argv ) {
     about->setIcon( QIcon::fromTheme( "help-about" ) );
     QAction* contents = help->addAction( tr( "What's this?" ) );
     contents->setIcon( QIcon::fromTheme( "help-contents" ) );
+
+    setCentralWidget( &m_structureView );
 }
