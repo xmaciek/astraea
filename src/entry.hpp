@@ -19,6 +19,8 @@ typedef std::vector<std::string> Array;
 
 class Entry {
 public:
+    Entry();
+    const uint64_t m_id;
     std::string m_name;
     Properties m_properties;
     Entries m_entries;

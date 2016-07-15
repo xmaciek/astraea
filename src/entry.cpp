@@ -8,6 +8,12 @@
 #include <iterator>
 #include <sstream>
 
+static uint64_t idCounter = 0;
+
+Entry::Entry() :
+    m_id( ++idCounter )
+{
+}
 
 bool Entry::isArray() const {
     return !m_array.empty() && m_entries.empty() && m_properties.empty();
