@@ -1,14 +1,19 @@
 #include "editor.hpp"
 
 #include <QAction>
+#include <QDir>
+#include <QFileDialog>
 #include <QIcon>
 #include <QKeySequence>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMessageBox>
+#include <QPointer>
 
 
 Editor::Editor( int argc, char** argv ) :
-    m_structureView( this )
+    m_structureView( this ),
+    m_starSystem( 0 )
 {
     QMenuBar* menuBar = new QMenuBar( this );
     setMenuBar( menuBar );
@@ -17,6 +22,8 @@ Editor::Editor( int argc, char** argv ) :
 
     QAction* open = file->addAction( tr( "Open" ) );
     open->setIcon( QIcon::fromTheme( "document-open" ) );
+    open->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_O ) );
+    connect( open, &QAction::triggered, this, &Editor::openFileDialog );
 
     QAction* save = file->addAction( tr( "Save" ) );
     save->setIcon( QIcon::fromTheme( "document-save" ) );
@@ -58,4 +65,25 @@ Editor::Editor( int argc, char** argv ) :
     contents->setIcon( QIcon::fromTheme( "help-contents" ) );
 
     setCentralWidget( &m_structureView );
+}
+
+void Editor::openFileDialog() {
+    QPointer<QFileDialog> dialog = new QFileDialog( this, tr( "Open star system file..." ), QDir::home().absolutePath() );
+    dialog->setAcceptMode( QFileDialog::AcceptOpen );
+    if ( dialog->exec() && dialog ) {
+        QFileInfo tmpFileInfo( dialog->selectedFiles()[0] );
+        std::string errOut;
+        Entry* tmpEntry = new Entry();
+        if ( !Entry::fromFile( tmpFileInfo.absoluteFilePath().toUtf8().data(), tmpEntry, &errOut ) ) {
+            delete tmpEntry;
+            QPointer<QMessageBox> msg = new QMessageBox(
+                QMessageBox::Critical, tr( "Parsing error" ), QString( errOut.c_str() ), QMessageBox::Ok, this );
+            msg->exec();
+            return;
+        }
+        m_currentStarSystemFile = tmpFileInfo;
+        delete m_starSystem;
+        m_starSystem = tmpEntry;
+        m_structureView.setEntry( m_starSystem );
+    }
 }

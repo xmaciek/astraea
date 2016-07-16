@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QFileInfo>
 #include <QMainWindow>
 
+#include "entry.hpp"
 #include "structureview.hpp"
 
 class Editor : public QMainWindow {
@@ -12,6 +14,12 @@ public:
 
 private:
     StructureView m_structureView;
+
+    Entry* m_starSystem;
+    QFileInfo m_currentStarSystemFile;
+
+private slots:
+    void openFileDialog();
 
 signals:
     void quit();
