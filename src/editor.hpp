@@ -3,6 +3,7 @@
 #include <QFileInfo>
 #include <QMainWindow>
 
+#include "debugview.hpp"
 #include "entry.hpp"
 #include "structureview.hpp"
 
@@ -13,12 +14,14 @@ public:
     Editor( int argc, char** argv );
 
 private:
+    DebugView m_debugView;
     StructureView m_structureView;
 
     Entry* m_starSystem;
     QFileInfo m_currentStarSystemFile;
 
 private slots:
+    void openDebugView();
     void openFileDialog();
 
 signals:

@@ -12,10 +12,12 @@ MOC_DIR = build
 OBJECTS_DIR = build
 
 # Input
-HEADERS +=  src/editor.hpp \
+HEADERS +=  src/debugview.hpp \
+            src/editor.hpp \
             src/structureview.hpp
 
 SOURCES +=  src/main.cpp \
+            src/debugview.cpp \
             src/editor.cpp \
             src/entry.cpp \
             src/property.cpp \

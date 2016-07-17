@@ -63,6 +63,11 @@ Editor::Editor( int argc, char** argv ) :
     about->setIcon( QIcon::fromTheme( "help-about" ) );
     QAction* contents = help->addAction( tr( "What's this?" ) );
     contents->setIcon( QIcon::fromTheme( "help-contents" ) );
+    help->addSeparator();
+    QAction* debugView = help->addAction( tr( "Debug view" ) );
+    debugView->setIcon( QIcon::fromTheme( "script-error" ) );
+    debugView->setShortcut( Qt::Key_F9 );
+    connect( debugView, &QAction::triggered, this, &Editor::openDebugView );
 
     setCentralWidget( &m_structureView );
 }
@@ -86,4 +91,9 @@ void Editor::openFileDialog() {
         m_starSystem = tmpEntry;
         m_structureView.setEntry( m_starSystem );
     }
+}
+
+void Editor::openDebugView() {
+    m_debugView.setData( m_currentStarSystemFile, *m_starSystem );
+    m_debugView.exec();
 }
