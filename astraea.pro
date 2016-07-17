@@ -11,6 +11,8 @@ QT += widgets
 MOC_DIR = build
 OBJECTS_DIR = build
 
+CONFIG += debug
+
 # Input
 HEADERS +=  src/debugview.hpp \
             src/editor.hpp \
