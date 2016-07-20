@@ -5,6 +5,8 @@
 
 #include "debugview.hpp"
 #include "entry.hpp"
+#include "history.hpp"
+#include "historyevent.hpp"
 #include "structureview.hpp"
 
 class Editor : public QMainWindow {
@@ -15,6 +17,7 @@ public:
 
 private:
     DebugView m_debugView;
+    History m_history;
     StructureView m_structureView;
 
     Entry* m_starSystem;
@@ -23,6 +26,7 @@ private:
 private slots:
     void openDebugView();
     void openFileDialog();
+    void performAction( const HistoryEvent* );
 
 signals:
     void quit();

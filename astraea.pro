@@ -16,11 +16,15 @@ CONFIG += debug
 # Input
 HEADERS +=  src/debugview.hpp \
             src/editor.hpp \
+            src/history.hpp \
+            src/historyevent.hpp \
             src/structureview.hpp
 
 SOURCES +=  src/main.cpp \
             src/debugview.cpp \
             src/editor.cpp \
             src/entry.cpp \
+            src/history.cpp \
+            src/historyevent.cpp \
             src/property.cpp \
             src/structureview.cpp

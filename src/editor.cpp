@@ -12,9 +12,11 @@
 
 
 Editor::Editor( int argc, char** argv ) :
+    m_history( this ),
     m_structureView( this ),
     m_starSystem( 0 )
 {
+    connect( &m_history, &History::performHistoryEvent, this, &Editor::performAction );
     QMenuBar* menuBar = new QMenuBar( this );
     setMenuBar( menuBar );
 
@@ -44,10 +46,16 @@ Editor::Editor( int argc, char** argv ) :
     QAction* undo = edit->addAction( tr( "Undo" ) );
     undo->setIcon( QIcon::fromTheme( "edit-undo" ) );
     undo->setShortcut( QKeySequence( Qt::CTRL | Qt::Key_Z ) );
+    connect( undo, &QAction::triggered, &m_history, &History::undo );
+    connect( &m_history, &History::undoAvailable, undo, &QAction::setEnabled );
 
     QAction* redo = edit->addAction( tr( "Redo" ) );
     redo->setIcon( QIcon::fromTheme( "edit-redo" ) );
     redo->setShortcut( QKeySequence( Qt::CTRL | Qt::SHIFT | Qt::Key_Z ) );
+    connect( redo, &QAction::triggered, &m_history, &History::redo );
+    connect( &m_history, &History::redoAvailable, redo, &QAction::setEnabled );
+
+    m_history.clear();
 
     edit->addSeparator();
 
@@ -86,6 +94,7 @@ void Editor::openFileDialog() {
             msg->exec();
             return;
         }
+        m_history.clear();
         m_currentStarSystemFile = tmpFileInfo;
         delete m_starSystem;
         m_starSystem = tmpEntry;
@@ -96,4 +105,8 @@ void Editor::openFileDialog() {
 void Editor::openDebugView() {
     m_debugView.setData( m_currentStarSystemFile, *m_starSystem );
     m_debugView.exec();
+}
+
+void Editor::performAction( const HistoryEvent* event ) {
+    
 }
